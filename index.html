@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#f5f7fb">
+    <link rel="icon" href="data:,">
+    <title>实验管理 · LMS</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="app.js" defer></script>
+  </head>
+  <body>
+    <div class="app-shell">
+      <aside class="sidebar" aria-label="主导航">
+        <a class="brand" href="#" aria-label="LMS 首页">
+          <span class="brand-mark">L</span>
+          <span>LMS<span class="brand-caption">学习管理系统</span></span>
+        </a>
+        <p class="nav-heading">工作空间</p>
+        <nav>
+          <a class="nav-item" href="#overview"><span aria-hidden="true">▦</span> 工作台</a>
+          <a class="nav-item active" href="#experiments" aria-current="page"><span aria-hidden="true">⌘</span> 实验管理</a>
+          <a class="nav-item" href="#courses"><span aria-hidden="true">▤</span> 课程管理</a>
+          <a class="nav-item" href="#students"><span aria-hidden="true">♧</span> 学生管理</a>
+        </nav>
+        <div class="sidebar-bottom">
+          <span class="avatar">林</span>
+          <span class="profile-copy"><strong>林老师</strong><small>实验课程教师</small></span>
+          <span class="profile-menu" aria-hidden="true">···</span>
+        </div>
+      </aside>
+
+      <main class="main-content" id="experiments">
+        <header class="topbar">
+          <div class="breadcrumb">工作空间 <span>/</span> 实验管理</div>
+          <div class="topbar-actions"><span class="term-label">2025—2026 学年</span><button class="icon-button" type="button" aria-label="通知">♧<i></i></button></div>
+        </header>
+
+        <section class="page-heading">
+          <div>
+            <p class="eyebrow">COURSE WORKSPACE</p>
+            <h1>实验管理</h1>
+            <p class="subtitle">管理课程实验安排，跟进实验进度与提交情况。</p>
+          </div>
+          <button class="primary-button" id="add-experiment" type="button"><span aria-hidden="true">＋</span> 新建实验</button>
+        </section>
+
+        <section class="stats-grid" aria-label="实验概览">
+          <article class="stat-card">
+            <div class="stat-icon purple" aria-hidden="true">⌘</div>
+            <div><p>实验总数</p><strong id="total-count">0</strong><small>已创建的实验</small></div>
+            <span class="stat-decoration">01</span>
+          </article>
+          <article class="stat-card">
+            <div class="stat-icon blue" aria-hidden="true">◷</div>
+            <div><p>进行中</p><strong id="active-count">0</strong><small>正在开展的实验</small></div>
+            <span class="stat-decoration">02</span>
+          </article>
+          <article class="stat-card">
+            <div class="stat-icon amber" aria-hidden="true">✓</div>
+            <div><p>待开始</p><strong id="upcoming-count">0</strong><small>尚未开始的实验</small></div>
+            <span class="stat-decoration">03</span>
+          </article>
+        </section>
+
+        <section class="experiments-panel" aria-labelledby="list-title">
+          <div class="panel-heading">
+            <div><h2 id="list-title">实验列表</h2><p>查看并管理所有课程实验</p></div>
+            <div class="list-controls">
+              <label class="search-box"><span aria-hidden="true">⌕</span><input id="search-input" type="search" placeholder="搜索实验、课程或教师" aria-label="搜索实验、课程或教师"></label>
+              <label class="select-wrap"><span class="sr-only">按状态筛选</span><select id="status-filter"><option value="all">全部状态</option><option value="进行中">进行中</option><option value="待开始">待开始</option><option value="已结束">已结束</option></select></label>
+            </div>
+          </div>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>实验名称</th><th>所属课程</th><th>指导教师</th><th>截止日期</th><th>提交情况</th><th>状态</th><th><span class="sr-only">操作</span></th></tr></thead>
+              <tbody id="experiment-list"></tbody>
+            </table>
+            <div class="empty-state" id="empty-state" hidden>
+              <span class="empty-icon" aria-hidden="true">⌘</span>
+              <strong>没有找到实验</strong>
+              <p>试试调整搜索条件，或创建一个新实验。</p>
+              <button class="secondary-button" id="empty-add" type="button">新建实验</button>
+            </div>
+          </div>
+          <footer class="panel-footer"><span id="results-count"></span><span>数据仅保存在当前浏览器</span></footer>
+        </section>
+        <footer class="page-footer">LMS · 学习管理系统 <span>让实验教学更简单</span></footer>
+      </main>
+    </div>
+
+    <dialog id="experiment-dialog" aria-labelledby="dialog-title">
+      <form id="experiment-form">
+        <div class="dialog-heading"><div><p class="eyebrow">EXPERIMENT DETAILS</p><h2 id="dialog-title">新建实验</h2></div><button class="icon-button close-dialog" type="button" aria-label="关闭">×</button></div>
+        <input id="experiment-id" type="hidden">
+        <label class="field-label" for="experiment-name">实验名称 <span>*</span></label>
+        <input class="text-field" id="experiment-name" name="name" maxlength="80" placeholder="例如：基础电路搭建与测量" required>
+        <div class="field-row">
+          <div><label class="field-label" for="experiment-course">所属课程 <span>*</span></label><input class="text-field" id="experiment-course" name="course" maxlength="60" placeholder="例如：大学物理实验" required></div>
+          <div><label class="field-label" for="experiment-teacher">指导教师 <span>*</span></label><input class="text-field" id="experiment-teacher" name="teacher" maxlength="40" placeholder="教师姓名" required></div>
+        </div>
+        <div class="field-row">
+          <div><label class="field-label" for="experiment-due">截止日期 <span>*</span></label><input class="text-field" id="experiment-due" name="dueDate" type="date" required></div>
+          <div><label class="field-label" for="experiment-status">实验状态</label><select class="text-field" id="experiment-status" name="status"><option>待开始</option><option>进行中</option><option>已结束</option></select></div>
+        </div>
+        <div><label class="field-label" for="experiment-submissions">已提交人数</label><input class="text-field" id="experiment-submissions" name="submissions" type="number" min="0" max="9999" value="0"></div>
+        <div class="dialog-actions"><button class="secondary-button close-dialog" type="button">取消</button><button class="primary-button" type="submit">保存实验</button></div>
+      </form>
+    </dialog>
+    <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  </body>
+</html>
